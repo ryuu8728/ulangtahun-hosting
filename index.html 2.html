@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kejutan Ulang Tahun Spesial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Pacifico&family=Poppins:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff5f7;
+            overflow-x: hidden;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        
+        .script-font {
+            font-family: 'Dancing Script', cursive;
+        }
+        
+        .pacifico-font {
+            font-family: 'Pacifico', cursive;
+        }
+        
+        .card {
+            transition: all 0.4s ease;
+            transform-style: preserve-3d;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,245,245,0.95) 100%);
+        }
+        
+        .card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .cake {
+            animation: float 6s ease-in-out infinite;
+            cursor: pointer;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .candle {
+            animation: flicker 0.8s infinite alternate;
+        }
+        
+        @keyframes flicker {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .heart {
+            animation: heartbeat 1.2s infinite;
+            cursor: pointer;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.15); }
+            40% { transform: scale(1); }
+            60% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+        
+        .balloon {
+            animation: balloon-float 8s ease-in-out infinite;
+            cursor: pointer;
+        }
+        
+        @keyframes balloon-float {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-25px) rotate(2deg); }
+        }
+        
+        .hidden-content {
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        #envelope {
+            transition: all 0.3s ease;
+        }
+        
+        #envelope:hover {
+            transform: translateY(-10px);
+        }
+        
+        .gift-box {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .sticker {
+            transition: all 0.3s ease;
+        }
+        
+        .sticker:hover {
+            transform: rotate(15deg) scale(1.1);
+            z-index: 10;
+        }
+        
+        .memory {
+            transform-origin: center;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .memory:hover {
+            transform: scale(1.05) rotate(-2deg);
+            z-index: 2;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <!-- Audio Element -->
+    <audio id="birthdayAudio" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Main Container -->
+    <div class="w-full max-w-2xl bg-white rounded-3xl shadow-xl overflow-hidden relative">
+        <!-- Header Section -->
+        <div class="bg-gradient-to-r from-pink-400 to-red-400 p-6 text-center relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 flex justify-around opacity-50">
+                <div class="balloon text-4xl" onclick="animateBalloon(this)">🎈</div>
+                <div class="balloon text-5xl" onclick="animateBalloon(this)">🎈</div>
+                <div class="balloon text-3xl" onclick="animateBalloon(this)">🎈</div>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-bold text-white script-font relative z-10 pt-10 pb-5">Happy Birthday!</h1>
+            <p class="text-white text-lg relative z-10 pb-4">Klik apapun di halaman ini untuk kejutan!</p>
+            
+            <div class="cake relative z-10 inline-block mb-6" onclick="showCakeMessage()">
+                <div class="relative">
+                    <img src="https://i.postimg.cc/jdzxdWT4/Chat-GPT-Image-Jul-21-2025-07-23-06-PM.png" alt="Beautiful vanilla birthday cake with pink frosting and strawberries" class="rounded-xl shadow-lg">
+                    <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                        <div class="candle w-2 h-16 bg-pink-300 rounded-full"></div>
+                        <div class="candle w-2 h-20 bg-pink-200 rounded-full"></div>
+                        <div class="candle w-2 h-16 bg-pink-300 rounded-full"></div>
+                    </div>
+                </div>
+                <div id="cakeMessage" class="hidden-content absolute bottom-full left-0 right-0 bg-yellow-50 p-3 rounded-lg shadow-lg text-sm text-yellow-800 mb-3">
+                    Tiup lilinnya dan buat permohonan! 🎂
+                </div>
+            </div>
+            
+            <div class="heart text-5xl text-white relative z-10 inline-block" onclick="showHeartMessage()">❤️
+                <div id="heartMessage" class="hidden-content absolute bottom-full left-1/2 transform -translate-x-1/2 bg-white text-red-400 text-sm p-2 rounded-lg shadow">
+                    Kamu dicintai dengan setulus hati!
+                </div>
+            </div>
+        </div>
+        
+        <!-- Interactive Content Section -->
+        <div class="p-6">
+            <!-- Clickable Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+                <!-- Card 1 - Letter -->
+                <div class="card rounded-xl p-5 shadow-md relative overflow-hidden" onclick="showCardContent(1)">
+                    <div class="absolute top-3 right-3 sticker text-2xl">✉️</div>
+                    <h3 class="text-xl font-semibold text-pink-600 mb-3 pacifico-font">Surat Rahasia</h3>
+                    <p class="text-gray-600 text-sm">Klik untuk membuka surat cintaku...</p>
+                    <div id="cardContent1" class="hidden-content mt-4 pt-3 border-t border-pink-100">
+                        <p class="text-gray-700 italic">Selamat ulang tahun, kalyca/fadila Semoga hari mu penuh dengan kebahagiaan dan kenangan indah. Aku sangat suka menghabiskan waktu dengan kamu dan aku berterima kasih atas setiap momen yang kita bagi bersama. Semoga tahun yang akan datang membawa kebahagiaan dan kesuksesan untuk kamu.</p>
+                        <p class="text-right text-pink-500 mt-2 script-font">- Ryuuu</p>
+                    </div>
+                </div>
+            
+            <!-- Clickable Gift -->
+            <div class="bg-pink-50 rounded-xl p-5 text-center mb-6" onclick="showGift()">
+                <div id="envelope" class="inline-block relative mb-3">
+                    <div class="w-24 h-16 bg-red-400 rounded-t-lg mx-auto"></div>
+                    <div class="w-24 h-10 bg-red-500 rounded-b-lg mx-auto relative -top-2"></div>
+                    <div class="absolute top-3 left-1/2 transform -translate-x-1/2 text-white text-3xl">🎁</div>
+                </div>
+                <h3 class="text-lg font-semibold text-pink-600">Buka Hadiahmu!</h3>
+                <div id="giftContent" class="hidden-content mt-4">
+                    <div class="gift-box inline-block p-4 bg-gradient-to-br from-pink-100 to-pink-200 rounded-lg border-2 border-pink-300 border-dashed">
+                        <div class="text-4xl mb-2">💝</div>
+                        <p class="text-sm text-pink-700">Hadiah terbesarku adalah mencintaimu setiap hari!</p>
+                        <p class="text-xs text-pink-600 mt-1">(Hadiah nyatanya sedang otw ke rumah kamu 😉)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Clickable Wishes -->
+            <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-5 mb-6" onclick="showWishes()">
+                <h3 class="text-xl font-semibold text-purple-600 mb-3 text-center pacifico-font">Ucapkan Harapan</h3>
+                <p class="text-center text-gray-600 text-sm mb-4">Klik untuk melihat doa-doa khusus untukmu...</p>
+                <div id="wishesContent" class="hidden-content">
+                    <div class="space-y-3">
+                        <div class="bg-white p-3 rounded-lg shadow-sm">
+                            <p class="text-purple-700">💖 Semoga panjang umur dan selalu dalam lindungan Tuhan</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg shadow-sm">
+                            <p class="text-purple-700">🌟 Diberi rezeki yang melimpah dan penuh berkah</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg shadow-sm">
+                            <p class="text-purple-700">🌹 Diberi kebahagiaan dan ketenangan hati selalu</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg shadow-sm">
+                            <p class="text-purple-700">🎯 Semua impian dan cita-citamu tercapai</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Final Surprise Button -->
+            <button id="finalSurpriseBtn" onclick="showFinalSurprise()" class="w-full bg-gradient-to-r from-pink-500 to-purple-500 text-white py-3 rounded-full font-semibold shadow-lg transform transition hover:scale-105 focus:outline-none">
+                Klik untuk Kejutan Terakhir!
+            </button>
+            
+            <div id="finalSurprise" class="hidden-content mt-5 text-center bg-yellow-50 p-4 rounded-xl border-2 border-yellow-200 border-dashed">
+                <div class="text-5xl mb-3">🎉</div>
+                <p class="script-font text-xl text-yellow-700">Selamat ulang tahun sayangku!</p>
+                <p class="text-yellow-600">Terima kasih telah menjadi orang terbaik dalam hidupku. Aku mencintaimu lebih dari apapun!</p>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="bg-pink-100 p-4 text-center text-pink-600 text-sm">
+            Ryuu D Garzio
+        </div>
+    </div>
+    
+    <script>
+        // Play audio automatically (will work on most browsers with user interaction)
+        document.addEventListener('click', function() {
+            const audio = document.getElementById('birthdayAudio');
+            audio.volume = 0.3;
+            audio.play().catch(e => console.log('Autoplay prevented:', e));
+        }, { once: true });
+        
+        // Balloon animation
+        function animateBalloon(balloon) {
+            balloon.style.transition = 'all 1s ease-out';
+            balloon.style.transform = 'translateY(-100vh) rotate(45deg)';
+            balloon.style.opacity = '0';
+            setTimeout(() => {
+                balloon.remove();
+            }, 1000);
+        }
+        
+        // Show cake message
+        function showCakeMessage() {
+            const msg = document.getElementById('cakeMessage');
+            msg.classList.toggle('hidden');
+            setTimeout(() => {
+                if (msg.classList.contains('hidden')) return;
+                msg.classList.add('hidden');
+            }, 2000);
+        }
+        
+        // Show heart message
+        function showHeartMessage() {
+            const msg = document.getElementById('heartMessage');
+            msg.classList.toggle('hidden');
+            setTimeout(() => {
+                if (msg.classList.contains('hidden')) return;
+                msg.classList.add('hidden');
+            }, 2000);
+        }
+        
+        // Show card content
+        function showCardContent(cardNum) {
+            document.getElementById(`cardContent${cardNum}`).classList.toggle('hidden');
+        }
+        
+        // Show gift
+        function showGift() {
+            const gift = document.getElementById('giftContent');
+            gift.classList.toggle('hidden');
+            
+            const envelope = document.getElementById('envelope');
+            if (gift.classList.contains('hidden')) {
+                envelope.innerHTML = `
+                    <div class="w-24 h-16 bg-red-400 rounded-t-lg mx-auto"></div>
+                    <div class="w-24 h-10 bg-red-500 rounded-b-lg mx-auto relative -top-2"></div>
+                    <div class="absolute top-3 left-1/2 transform -translate-x-1/2 text-white text-3xl">🎁</div>
+                `;
+            } else {
+                envelope.innerHTML = `
+                    <div class="w-24 h-16 bg-red-300 rounded-t-lg mx-auto transform -rotate-6 origin-bottom"></div>
+                    <div class="w-24 h-10 bg-red-400 rounded-b-lg mx-auto"></div>
+                `;
+            }
+        }
+        
+        // Show wishes
+        function showWishes() {
+            document.getElementById('wishesContent').classList.toggle('hidden');
+        }
+        
+        // Final surprise
+        function showFinalSurprise() {
+            const surprise = document.getElementById('finalSurprise');
+            const btn = document.getElementById('finalSurpriseBtn');
+            
+            surprise.classList.toggle('hidden');
+            if (surprise.classList.contains('hidden')) {
+                btn.textContent = 'Klik untuk Kejutan Terakhir!';
+            } else {
+                btn.textContent = 'Tutup Kejutan';
+                
+                // Create confetti effect
+                createConfetti();
+            }
+        }
+        
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['#f00', '#0f0', '#00f', '#ff0', '#f0f', '#0ff'];
+            const container = document.createElement('div');
+            container.style.position = 'fixed';
+            container.style.top = '0';
+            container.style.left = '0';
+            container.style.width = '100vw';
+            container.style.height = '100vh';
+            container.style.pointerEvents = 'none';
+            container.style.zIndex = '1000';
+            document.body.appendChild(container);
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'absolute';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.borderRadius = '50%';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-10px';
+                confetti.style.opacity = '0.8';
+                
+                const anim = confetti.animate([
+                    { top: '-10px', opacity: 1, transform: 'scale(1)' },
+                    { top: '100vh', opacity: 0, transform: 'scale(0.5)' }
+                ], {
+                    duration: Math.random() * 3000 + 2000,
+                    easing: 'cubic-bezier(0.1,0.8,0.9,1)'
+                });
+                
+                container.appendChild(confetti);
+                
+                anim.onfinish = () => {
+                    confetti.remove();
+                    if (container.children.length === 0) {
+                        container.remove();
+                    }
+                };
+            }
+            
+            setTimeout(() => {
+                document.body.removeChild(container);
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
